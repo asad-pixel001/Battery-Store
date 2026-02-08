@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box
+        }
+
+        body {
+            background: #2a2a2a;
+            display: flex;
+            height: 100vh;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Segoe UI', sans-serif
+        }
+
+        .card {
+            background: linear-gradient(135deg, #3f3f3f 0%, #2d3436 100%);
+            height: 500px;
+            width: 400px;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border-left: 4px solid #1e3a8a;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5)
+        }
+
+        .a,
+        .b {
+            display: flex;
+            flex-direction: column;
+            margin: 2px 0
+        }
+
+        .a {
+            width: 60%
+        }
+
+        .b {
+            width: 70%
+        }
+
+        input {
+            padding: 10px 5px;
+            border-radius: 5px;
+            border: 1px solid #1e3a8a;
+            margin: 5px 0;
+            background: #404040;
+            color: #e0e0e0
+        }
+
+        input::placeholder {
+            color: #888
+        }
+
+        h1 {
+            text-transform: uppercase;
+            margin-bottom: 30px;
+            color: #e0e0e0
+        }
+
+        label,
+        p {
+            color: #e0e0e0
+        }
+
+        label {
+            margin-bottom: 5px
+        }
+
+        a {
+            color: #2563eb;
+            text-decoration: none
+        }
+
+        a:hover {
+            color: #1e3a8a
+        }
+
+        input[type="submit"] {
+            background: #1e3a8a;
+            color: #e0e0e0;
+            cursor: pointer;
+            font-weight: bold;
+            border: none;
+            transition: background 0.3s
+        }
+
+        input[type="submit"]:hover {
+            background: #2563eb
+        }
+
+        .b .icone {
+            position: relative;
+            left: 250px;
+            bottom: 47px;
+            width: 20px;
+            cursor: pointer;
+            color: #e0e0e0
+        }
+
+        .form-field {
+            position: relative;
+            width: 100%;
+            margin: 10px 0
+        }
+
+        .form-field input {
+            width: 100%;
+            height: 42px;
+            padding: 10px 12px;
+            font-size: 14px;
+            border: 1px solid #1e3a8a;
+            border-radius: 4px;
+            outline: none;
+            background: #404040;
+            color: #e0e0e0;
+            transition: border-color 0.2s ease
+        }
+
+        .form-field input:focus {
+            border-color: #2563eb
+        }
+
+        .form-field label {
+            position: absolute;
+            left: 12px;
+            top: 28%;
+            transform: translateY(2%);
+            font-size: 14px;
+            color: #888;
+            pointer-events: none;
+            background: #3f3f3f;
+            padding: 0 6px;
+            transition: all 0.2s ease
+        }
+
+        .form-field input:focus+label,
+        .form-field input:not(:placeholder-shown)+label {
+            top: -6px;
+            font-size: 12px;
+            color: #2563eb
+        }
+    </style>
+
+</head>
+
+<body>
+    <form onsubmit="main(event)">
+        <div class="card">
+            <h1>login</h1>
+
+            <div class="b">
+                <div class="form-field">
+                    <input type="email" id="email" name="email" placeholder=" " autocomplete="off">
+                    <label for="email">Email</label>
+                </div>
+                <div class="form-field">
+                    <input type="password" id="password" name="password" class="pass" placeholder=" "
+                        autocomplete="off">
+                    <label for="password">Password</label>
+                </div>
+                <div class="icone">
+                    <i class="fa-regular fa-eye"></i>
+                </div>
+            </div>
+
+            <div class="a">
+                <input type="submit" placeholder="password">
+                <p>Have an account? <a href="register.html">Register</a></p>
+            </div>
+
+        </div>
+    </form>
+    <script>
+        function main(event) {
+            event.preventDefault();
+            const form = new FormData(event.target);
+            let obj = Object.fromEntries(form)
+            console.log(obj);
+
+            let data = JSON.parse(localStorage.getItem("submit")) || [];
+            console.log(data);
+
+            let email = obj.email;
+            let password = obj.password;
+            let user = data.find(user => user.email === email && user.password === password);
+            if (user) {
+                localStorage.setItem("loggedInUser", JSON.stringify(user));
+                window.location.href = "shop.html";
+            } else {
+                alert("Invalid email or password.");
+            }
+
+        }
+        const bbtn = document.querySelector(".fa-eye");
+        const passwordInput = document.querySelector(".pass");
+
+        bbtn.addEventListener("click", () => {
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text";
+                bbtn.classList.replace("fa-eye", "fa-eye-slash");
+                console.log("show");
+
+            } else {
+                passwordInput.type = "password";
+                bbtn.classList.replace("fa-eye-slash", "fa-eye");
+                console.log("hide");
+            }
+        });
+
+    </script>
+</body>
+
+</html>

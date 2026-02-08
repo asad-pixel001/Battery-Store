@@ -1,0 +1,1122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Battery Shop</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #2a2a2a;
+            color: #e0e0e0;
+        }
+
+        nav {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d3436 100%);
+            color: #e0e0e0;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 2px solid #1e3a8a;
+        }
+
+        nav h2 {
+            flex: 1;
+        }
+
+        /* nav span {
+            cursor: pointer;
+            padding: 0.5rem 1rem;
+            background: #1e3a8a;
+            border-radius: 20px;
+            color: #e0e0e0;
+        } */
+
+        nav span:hover {
+            background: #2563eb;
+        }
+
+        .hamburger {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #e0e0e0;
+            background: none;
+            border: none;
+            padding: 0.5rem;
+            z-index: 101;
+        }
+
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 70%;
+            max-width: 300px;
+            height: 100vh;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d3436 100%);
+            padding-top: 4rem;
+            z-index: 99;
+            overflow-y: auto;
+            animation: slideInLeft 0.3s ease-out;
+        }
+
+        .mobile-menu.active {
+            display: block;
+        }
+
+        .mobile-menu a,
+        .mobile-menu span {
+            display: block;
+            padding: 1rem 1.5rem;
+            color: #e0e0e0;
+            text-decoration: none;
+            border-bottom: 1px solid #404040;
+            cursor: pointer;
+            transition: background 0.2s;
+            font-size: 0.85rem;
+        }
+
+        .mobile-menu a:hover,
+        .mobile-menu span:hover {
+            background: #1e3a8a;
+        }
+
+        .mobile-menu-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 98;
+        }
+
+        .mobile-menu-overlay.active {
+            display: block;
+        }
+
+        @keyframes slideInLeft {
+            from {
+                transform: translateX(-100%);
+            }
+
+            to {
+                transform: translateX(0);
+            }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #3f3f3f 0%, #2d3436 100%);
+            color: #e0e0e0;
+            padding: 2rem;
+            text-align: center;
+            margin-bottom: 2rem;
+            border-left: 4px solid #1e3a8a;
+        }
+
+        .controls {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .controls input,
+        .controls select {
+            padding: 0.5rem;
+            border: none;
+            border-radius: 5px;
+            font-size: small;
+            background: #404040;
+            color: #e0e0e0;
+            border: 1px solid #1e3a8a;
+        }
+
+        .controls input::placeholder {
+            color: #888;
+        }
+
+        .controls input {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .controls select {
+            min-width: 129px;
+        }
+
+        .controls button {
+            padding: 0.7rem 1.5rem;
+            background: #1e3a8a;
+            color: #e0e0e0;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .controls button:hover {
+            background: #2563eb;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .card {
+            background: #3f3f3f;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s, box-shadow 0.3s, border 0.3s;
+            border-left: 3px solid #1e3a8a;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(30, 58, 138, 0.3);
+            border-left: 3px solid #2563eb;
+        }
+
+        .card-img {
+            background: linear-gradient(135deg, #2d3436 0%, #1a1a1a 100%);
+            height: 162px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .card-body {
+            /* padding: 1.5rem; */
+            margin: 1px 8px;
+        }
+
+        .card-type {
+            color: #2563eb;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .card-name {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin: 0.5rem 0;
+            color: #e0e0e0;
+        }
+
+        .card-rating {
+            color: #f39c12;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .card-specs {
+            background: #2d3436;
+            padding: 0.8rem;
+            border-radius: 5px;
+            font-size: 0.85rem;
+            /* margin: 0.8rem 0; */
+            color: #a0a0a0;
+        }
+
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid #555;
+            padding: 3px;
+        }
+
+        .card-price {
+            font-size: 1.6rem;
+            font-weight: bold;
+            color: #2563eb;
+        }
+
+        .card-price small {
+            text-decoration: line-through;
+            color: #999;
+            font-size: 0.8rem;
+            margin-right: 0.5rem;
+        }
+
+        .card-btn {
+            padding: 0.7rem 1rem;
+            background: #1e3a8a;
+            color: #e0e0e0;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+
+        .card-btn:hover {
+            background: #2563eb;
+        }
+
+        .stock {
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-top: 0.5rem;
+        }
+
+        .stock.in-stock {
+            color: #27ae60;
+        }
+
+        .stock.low {
+            color: #f39c12;
+        }
+
+        .sidebar {
+            float: left;
+            width: 20%;
+            margin-right: 2%;
+            background: #3f3f3f;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+            border-left: 3px solid #1e3a8a;
+        }
+
+        .sidebar h3 {
+            margin: 1rem 0 0.8rem 0;
+            color: #2563eb;
+            border-bottom: 2px solid #1e3a8a;
+            padding-bottom: 0.5rem;
+        }
+
+        .sidebar label {
+            display: block;
+            margin: 0.5rem 0;
+            cursor: pointer;
+            color: #a0a0a0;
+        }
+
+        .sidebar label:hover {
+            color: #e0e0e0;
+        }
+
+        .content {
+            float: right;
+            width: 78%;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: right;
+            justify-content: right;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: #3f3f3f;
+            padding: 2rem;
+            border-radius: 10px;
+            max-width: 500px;
+            width: 90%;
+            color: #e0e0e0;
+            border: 2px solid #1e3a8a;
+        }
+
+        .modal-content h2 {
+            color: #2563eb;
+        }
+
+        .modal-close {
+            float: right;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            border-bottom: 1px solid #555;
+        }
+
+        .category-option {
+            padding: 1rem;
+            border-bottom: 1px solid #555;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .category-option:hover {
+            background: #2a2a2a;
+        }
+
+        .cart-total {
+            padding: 1rem;
+            text-align: right;
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #2563eb;
+        }
+
+        footer {
+            clear: both;
+            background: #222;
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            margin-top: 3rem;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 3rem;
+            color: #666;
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .hamburger {
+                display: block;
+                position: fixed;
+                top: 1rem;
+                left: 1rem;
+            }
+
+            nav div:last-child {
+                display: none;
+            }
+
+            nav h2 {
+                font-size: 1.2rem;
+            }
+
+            nav span {
+                font-size: 13px;
+                padding: 1px;
+            }
+
+            .desktop-fav {
+                display: none !important;
+            }
+
+            .hero h1 {
+                font-size: 1.5rem;
+            }
+
+            .hero p {
+                font-size: 0.9rem;
+            }
+
+            .controls {
+                gap: 0.6rem;
+            }
+
+            .controls input,
+            .controls select,
+            .controls button {
+                font-size: 0.85rem;
+                padding: 0.6rem;
+            }
+
+            .controls input {
+                flex: 1;
+                min-width: 150px;
+            }
+
+            .controls select {
+                min-width: 100px;
+            }
+
+            .controls button {
+                padding: 0.6rem 1rem;
+            }
+
+            .products-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+                gap: 1rem;
+            }
+
+            .card-btn {
+                padding: 0.8rem;
+                font-size: 0.9rem;
+            }
+
+            .sidebar {
+                display: none;
+            }
+
+            .content {
+                float: none;
+                width: 100%;
+            }
+
+            .modal-content {
+                width: 95%;
+                max-width: 90vw;
+                padding: 1rem;
+                border-radius: 8px;
+                max-height: 70vh;
+                overflow-y: auto;
+            }
+
+            .modal-content h2 {
+                font-size: 1.1rem;
+                margin-bottom: 0.8rem;
+            }
+
+            .cart-item {
+                flex-direction: column;
+                gap: 0.8rem;
+                padding: 1rem;
+            }
+
+            .cart-item div:last-child {
+                width: 100%;
+                flex-direction: column;
+            }
+
+            .cart-item button {
+                width: 100%;
+                padding: 0.8rem;
+                font-size: 0.9rem;
+            }
+
+            .card-price {
+                font-size: 1.3rem;
+            }
+
+            .card-name {
+                font-size: 1rem;
+            }
+
+            .card-specs {
+                font-size: 0.75rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .hero {
+                padding: 1.5rem;
+            }
+
+            .controls {
+                gap: 0.4rem;
+            }
+
+            .controls input,
+            .controls select,
+            .controls button {
+                font-size: 0.75rem;
+                padding: 0.5rem 0.4rem;
+            }
+
+            .controls input {
+                min-width: 100px;
+            }
+
+            .controls select {
+                min-width: 70px;
+            }
+
+            .controls button {
+                padding: 0.5rem 0.6rem;
+            }
+
+            nav h2 {
+                font-size: 1rem;
+            }
+
+            nav span {
+                font-size: 13px;
+                padding: 1px;
+            }
+
+            .products-grid {
+                grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+                gap: 0.8rem;
+            }
+
+            .card-img {
+                height: 100px;
+                font-size: 2rem;
+            }
+
+            .card-body {
+                padding: 0.8rem;
+            }
+
+            .card-footer {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .card-btn {
+                width: 100%;
+                padding: 0.8rem;
+            }
+
+            .modal-content {
+                padding: 0.8rem;
+                max-width: 60%;
+                font-size: 0.9rem;
+            }
+
+            .modal-content h2 {
+                font-size: 1rem;
+                margin-bottom: 0.8rem;
+            }
+
+            .cart-item {
+                padding: 0.8rem;
+                gap: 0.5rem;
+            }
+
+            .cart-total {
+                font-size: 0.9rem;
+                padding: 0.8rem;
+            }
+
+            input[type="number"] {
+                width: 40px !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <nav id="navbar"></nav>
+    <button class="hamburger" id="hamburger">☰</button>
+    <div class="mobile-menu" id="mobileMenu"></div>
+    <div class="mobile-menu-overlay" id="menuOverlay"></div>
+    <div class="container">
+        <div class="hero" id="hero"></div>
+        <div class="controls" id="controls"></div>
+        <div class="sidebar" id="sidebar"></div>
+        <div class="content">
+            <div class="products-grid" id="products"></div>
+        </div>
+    </div>
+    <div class="modal" id="cartModal">
+        <div class="modal-content">
+            <span class="modal-close" id="closeCart">&times;</span>
+            <h2>Shopping Cart</h2>
+            <div id="cartItems"></div>
+            <div class="cart-total" id="cartTotal"></div>
+            <button class="card-btn" style="width: 100%; margin-top: 1rem;" onclick="checkout()">Checkout</button>
+        </div>
+    </div>
+    <div class="modal" id="favModal">
+        <div class="modal-content">
+            <span class="modal-close" id="closeFav">&times;</span>
+            <h2>My Favorites</h2>
+            <div id="favItems"></div>
+        </div>
+    </div>
+    <div class="modal" id="categoryModal">
+        <div class="modal-content">
+            <span class="modal-close" id="closeCat">&times;</span>
+            <h2>Filter by Type</h2>
+            <div id="categoryItems"></div>
+        </div>
+    </div>
+    <footer id="footer"></footer>
+
+    <script>
+        // CHECK AUTHENTICATION
+        function logout() {
+            localStorage.removeItem("loggedInUser");
+            location.reload();
+        }
+        // image in 233.58px; height in 162px
+        const products = [
+            {
+                id: 1, name: 'Energizer Max AA',
+                type: 'AA',
+                price: 299,
+                original: 450,
+                rating: 5,
+                reviews: 234,
+                image: 'h image/images (23).jpeg',
+                pack: '4 Pieces',
+                life: '10 Years',
+                stock: 'in-stock'
+            },
+            {
+                id: 2,
+                name: 'Duracell AAA Pack',
+                type: 'AAA',
+                price: 249,
+                original: 400,
+                rating: 4,
+                reviews: 189,
+                image: 'h image/images (24).jpeg',
+                pack: '4 Pieces',
+                life: '10 Years',
+                stock: 'in-stock'
+            },
+            {
+                id: 3,
+                name: 'Energizer Max C',
+                type: 'C',
+                price: 349,
+                original: 550,
+                rating: 5,
+                reviews: 156,
+                image: 'h image/images (25).jpeg',
+                pack: '2 Pieces',
+                life: '10 Years',
+                stock: 'in-stock'
+            },
+            {
+                id: 4,
+                name: 'Panasonic D Batteries',
+                type: 'D',
+                price: 399,
+                original: 650,
+                rating: 4,
+                reviews: 112,
+                image: 'h image/images (26).jpeg',
+                pack: '2 Pieces',
+                life: '12 Years',
+                stock: 'in-stock'
+            },
+            {
+                id: 5,
+                name: 'Eveready 9V Battery',
+                type: '9V',
+                price: 149,
+                original: 250,
+                rating: 5,
+                reviews: 267,
+                image: 'h image/images (27).jpeg',
+                pack: '1 Piece',
+                life: '12 Years',
+                stock: 'in-stock'
+            },
+            {
+                id: 6,
+                name: 'Rechargeable AA Pack',
+                type: 'Rechargeable',
+                price: 699,
+                original: 1200,
+                rating: 5,
+                reviews: 342,
+                image: 'h image/images (28).jpeg',
+                pack: '4 Pieces',
+                cycles: '1000+',
+                stock: 'in-stock'
+            },
+            {
+                id: 7,
+                name: 'Watch & Calculator Cells',
+                type: 'Button',
+                price: 179,
+                original: 300,
+                rating: 4,
+                reviews: 198,
+                image: 'h image/images (29).jpeg',
+                pack: '5 Pieces',
+                life: '5 Years',
+                stock: 'in-stock'
+            },
+            {
+                id: 8,
+                name: 'Energizer Heavy Duty Mix',
+                type: 'Heavy Duty',
+                price: 499,
+                original: 899,
+                rating: 5,
+                reviews: 289,
+                image: 'h image/images (30).jpeg',
+                pack: '12 Mixed',
+                life: '5 Years',
+                stock: 'low'
+            }
+        ];
+
+        let cart = [];
+        let favorites = [];
+        let filteredProducts = [...products];
+
+        // LOCALSTORAGE - Load cart from storage
+        function loadCart() {
+            const savedCart = localStorage.getItem('batteryShopCart');
+            if (savedCart) {
+                cart = JSON.parse(savedCart);
+                updateCart();
+            }
+        }
+
+        // LOCALSTORAGE - Save cart to storage
+        function saveCart() {
+            localStorage.setItem('batteryShopCart', JSON.stringify(cart));
+        }
+
+        // LOCALSTORAGE - Load favorites from storage
+        function loadFavorites() {
+            const savedFavorites = localStorage.getItem('batteryShopFavorites');
+            if (savedFavorites) {
+                favorites = JSON.parse(savedFavorites);
+            }
+        }
+
+        // LOCALSTORAGE - Save favorites to storage
+        function saveFavorites() {
+            localStorage.setItem('batteryShopFavorites', JSON.stringify(favorites));
+        }
+
+        // ADD/REMOVE FROM FAVORITES
+        function toggleFavorite(id) {
+            if (favorites.includes(id)) {
+                favorites = favorites.filter(fav => fav !== id);
+            } else {
+                favorites.push(id);
+            }
+            saveFavorites();
+            document.getElementById('favCount').innerText = favorites.length;
+            document.getElementById('mobFavCount').innerText = favorites.length;
+            renderProducts();
+        }
+
+        // NAVBAR
+        const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
+        let navbarHTML = `
+            <div><h2 style="color: white; margin: 0;">⚡ Battery Shop</h2></div>
+            <div style="display: flex; gap: 1rem; align-items: center; font-size: smaller;">
+                <a href="ex.html" style="color: white; text-decoration: none;">Home</a>
+                <a href="#about" style="color: white; text-decoration: none;">About</a>
+                <a href="#contact" style="color: white; text-decoration: none;">Contact</a>
+                <span class="desktop-fav" onclick="openFavorites()" style="cursor: pointer; padding: 0.5rem 1rem; background: #1e3a8a; border-radius: 20px; color: #e0e0e0;">❤️ (<span id="favCount">${favorites.length}</span>)</span>
+                <span onclick="openCart()" style="cursor: pointer; padding: 0.5rem 1rem; background: #1e3a8a; border-radius: 20px; color: #e0e0e0;">🛒 (<span id="cartCount">0</span>)</span>
+        `;
+
+        if (loggedInUser) {
+            navbarHTML += `
+                <span style="padding: 0.5rem 1rem; background: #2563eb; border-radius: 20px; color: #e0e0e0;">${loggedInUser.fn} ${loggedInUser.ln}</span>
+                <span onclick="logout()" style="cursor: pointer; padding: 0.5rem 1rem; background: #c0392b; border-radius: 20px; color: #e0e0e0;">Logout</span>
+            `;
+        } else {
+            navbarHTML += `
+                <a href="login.html" style="cursor: pointer; padding: 0.5rem 1rem; background: #27ae60; border-radius: 20px; color: white; text-decoration: none;">Login</a>
+            `;
+        }
+
+        navbarHTML += `</div>`;
+        document.getElementById('navbar').innerHTML = navbarHTML;
+
+        // Remove fixed cart button if it exists
+        const existingBtn = document.getElementById('fixedCartBtn');
+        if (existingBtn) existingBtn.remove();
+
+        // MOBILE MENU
+        function renderMobileMenu() {
+            let mobileHTML = `
+                <a href="ex.html" onclick="closeMobileMenu()">🏠 Home</a>
+                <a href="#about" onclick="closeMobileMenu()">ℹ️ About</a>
+                <a href="#contact" onclick="closeMobileMenu()">📞 Contact</a>
+                <span onclick="openCategories(); closeMobileMenu()">🏷️ Category</span>
+                <span onclick="openFavorites(); closeMobileMenu()">❤️ (<span id="mobFavCount">${favorites.length}</span>)</span>
+                <span onclick="openCart(); closeMobileMenu()">🛒 (<span id="mobCartCount">0</span>)</span>
+            `;
+
+            if (loggedInUser) {
+                mobileHTML += `
+                    <span style="color: #2563eb; padding: 1rem 1.5rem;">${loggedInUser.fn} ${loggedInUser.ln}</span>
+                    <span onclick="logout(); closeMobileMenu()" style="color: #c0392b; cursor: pointer;">Logout</span>
+                `;
+            } else {
+                mobileHTML += `
+                    <a href="login.html" onclick="closeMobileMenu()" style="color: #27ae60;">Login</a>
+                    <a href="register.html" onclick="closeMobileMenu()" style="color: #2563eb;">📝 Register</a>
+                `;
+            }
+
+            document.getElementById('mobileMenu').innerHTML = mobileHTML;
+        }
+
+        function toggleMobileMenu() {
+            document.getElementById('mobileMenu').classList.toggle('active');
+            document.getElementById('menuOverlay').classList.toggle('active');
+        }
+
+        function closeMobileMenu() {
+            document.getElementById('mobileMenu').classList.remove('active');
+            document.getElementById('menuOverlay').classList.remove('active');
+        }
+
+        document.getElementById('hamburger').addEventListener('click', toggleMobileMenu);
+        document.getElementById('menuOverlay').addEventListener('click', closeMobileMenu);
+
+        // HERO
+        document.getElementById('hero').innerHTML = `<h1>⚡ Premium Batteries Store</h1><p>Best Quality Batteries at Lowest Prices | Fast Delivery</p>`;
+
+        // CONTROLS
+        document.getElementById('controls').innerHTML = `
+            <input type="text" id="search" placeholder="Search batteries..." onkeyup="filterProducts()">
+            <select id="sort" onchange="filterProducts()">
+                <option value="">Sort By</option>
+                <option value="price-low">Price: Low to High</option>
+                <option value="price-high">Price: High to Low</option>
+                <option value="rating">Top Rated</option>
+            </select>
+            <button onclick="resetFilters()">Reset</button>
+        `;
+
+        // SIDEBAR
+        function renderSidebar() {
+            let categories = [...new Set(products.map(p => p.type))];
+
+            let html = `<h3>Categories</h3>`;
+            categories.forEach(cat => {
+                html += `<label><input type="checkbox" value="${cat}" onchange="filterProducts()"> ${cat}</label>`;
+            });
+            document.getElementById('sidebar').innerHTML = html;
+        }
+
+        // FILTER
+        function filterProducts() {
+            const search = document.getElementById('search').value.toLowerCase();
+
+            // Get categories from both sidebar and modal
+            const sidebarCategories = Array.from(document.querySelectorAll('#sidebar input[type="checkbox"]:checked')).map(c => c.value);
+            const modalCategories = Array.from(document.querySelectorAll('.category-filter:checked')).map(c => c.value).filter(v => v !== '');
+            const allCategories = [...new Set([...sidebarCategories, ...modalCategories])];
+            const sort = document.getElementById('sort').value;
+
+            filteredProducts = products.filter(p => {
+                const matchSearch = p.name.toLowerCase().includes(search) || p.type.toLowerCase().includes(search);
+                const matchCategory = allCategories.length === 0 || allCategories.includes(p.type);
+                return matchSearch && matchCategory;
+            });
+
+            if (sort === 'price-low') filteredProducts.sort((a, b) => a.price - b.price);
+            if (sort === 'price-high') filteredProducts.sort((a, b) => b.price - a.price);
+            if (sort === 'rating') filteredProducts.sort((a, b) => b.rating - a.rating);
+
+            renderProducts();
+        }
+
+        // RENDER PRODUCTS
+        function renderProducts() {
+            let html = '';
+            if (filteredProducts.length === 0) {
+                html = '<div class="empty"><h3>No products found</h3></div>';
+            } else {
+                filteredProducts.forEach(p => {
+                    const discount = Math.round(((p.original - p.price) / p.original) * 100);
+                    const stars = '⭐'.repeat(p.rating);
+                    const imgHTML = p.image ? `<img src="${p.image}" alt="${p.name}">` : '🔋';
+                    html += `
+                        <div class="card">
+                            <div class="card-img" style="position: relative;">
+                                ${imgHTML}
+                                <span onclick="toggleFavorite(${p.id})" style="position: absolute; top: 5px; right: 5px; font-size: 1.5rem; cursor: pointer; filter: drop-shadow(0 0 2px rgba(0,0,0,0.5));">${favorites.includes(p.id) ? '❤️' : '🤍'}</span>
+                            </div>
+                            <div class="card-body">
+                                
+                                <div class="card-type">${p.type} Battery</div>
+                                <div class="card-name">${p.name}</div>
+                                <!-- <div class="card-rating">${stars} (${p.reviews})</div> -->
+                                <div class="card-specs"><strong>Pack:</strong> ${p.pack}<br><strong>${p.cycles ? 'Cycles' : 'Life'}:</strong> ${p.cycles || p.life}</div>
+                                <div class="stock ${p.stock === 'in-stock' ? 'in-stock' : 'low'}">${p.stock === 'in-stock' ? '✓ In Stock' : '⚠ Limited'}</div>
+                                <div class="card-footer">
+                                    <div class="card-price">Rs. ${p.price}</div>
+                                    <!-- <span style="background: #e74c3c; color: white; padding: 0.2rem 0.5rem; border-radius: 3px; font-size: 0.75rem;">-${discount}%</span><small>Rs. ${p.original}</small> -->
+                                    <button class="card-btn" onclick="addToCart(${p.id})">Add</button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+            document.getElementById('products').innerHTML = html;
+        }
+
+        // CART
+        function addToCart(id) {
+            const product = products.find(p => p.id === id);
+            const existing = cart.find(c => c.id === id);
+            if (existing) existing.qty++;
+            else cart.push({ ...product, qty: 1 });
+            updateCart();
+        }
+
+        function removeFromCart(id) {
+            cart = cart.filter(c => c.id !== id);
+            updateCart();
+        }
+
+        function changeQty(id, change) {
+            const item = cart.find(c => c.id === id);
+            if (item) {
+                item.qty += change;
+                if (item.qty < 0) {
+                    item.qty = 0;
+                }
+                updateCart();
+            }
+        }
+
+        function updateCart() {
+            const count = cart.reduce((sum, item) => sum + item.qty, 0);
+            document.getElementById('cartCount').innerText = count;
+            document.getElementById('mobCartCount').innerText = count;
+            renderCart();
+            saveCart();
+        }
+
+        function renderCart() {
+            let html = '';
+            let total = 0;
+            if (cart.length === 0) {
+                html = '<div class="empty"><p>Your cart is empty</p></div>';
+            } else {
+                cart.forEach(item => {
+                    total += item.price * item.qty;
+                    html += `<div class="cart-item"><div><strong>${item.name}</strong><br>Rs. ${item.price} x ${item.qty}</div><div style="display: flex; align-items: center; gap: 0.5rem;"><button onclick="changeQty(${item.id}, -1)" style="padding: 0.3rem 0.5rem; background: #1e3a8a; color: white; border: none; border-radius: 3px; cursor: pointer; font-weight: bold;">−</button><input type="number" value="${item.qty}" min="1" style="width: 50px; padding: 0.3rem; background: #404040; color: #e0e0e0; border: 1px solid #1e3a8a; border-radius: 3px; text-align: center;" onchange="changeQty(${item.id}, this.value - ${item.qty})"><button onclick="changeQty(${item.id}, 1)" style="padding: 0.3rem 0.5rem; background: #1e3a8a; color: white; border: none; border-radius: 3px; cursor: pointer; font-weight: bold;">+</button><strong>Rs. ${item.price * item.qty}</strong><button onclick="removeFromCart(${item.id})" style="margin-left: 1rem; padding: 0.5rem; background: #c0392b; color: white; border: none; border-radius: 5px; cursor: pointer;">Remove</button></div></div>`;
+                });
+            }
+            document.getElementById('cartItems').innerHTML = html;
+            document.getElementById('cartTotal').innerHTML = `Total: Rs. ${total}`;
+        }
+
+        function openCart() {
+            document.getElementById('cartModal').classList.add('active');
+        }
+
+        function checkout() {
+            if (!loggedInUser) {
+                alert("Please login to proceed with checkout!");
+                window.location.href = "login.html";
+            } else {
+                alert("✅ Order placed successfully! Total: Rs. " + cart.reduce((sum, item) => sum + (item.price * item.qty), 0));
+                cart = [];
+                updateCart();
+                document.getElementById('cartModal').classList.remove('active');
+            }
+        }
+
+        document.getElementById('closeCart').addEventListener('click', () => {
+            document.getElementById('cartModal').classList.remove('active');
+        });
+
+        function openFavorites() {
+            renderFavorites();
+            document.getElementById('favModal').classList.add('active');
+        }
+
+        document.getElementById('closeFav').addEventListener('click', () => {
+            document.getElementById('favModal').classList.remove('active');
+        });
+
+        function openCategories() {
+            renderCategories();
+            document.getElementById('categoryModal').classList.add('active');
+        }
+
+        document.getElementById('closeCat').addEventListener('click', () => {
+            document.getElementById('categoryModal').classList.remove('active');
+        });
+
+        function renderCategories() {
+            const categories = ['All', 'AA', 'AAA', 'C', 'D', '9V', 'Rechargeable', 'Button', 'Heavy Duty'];
+
+            // Get currently checked categories
+            const checkedCategories = Array.from(document.querySelectorAll('.category-filter:checked')).map(c => c.value);
+
+            let html = '';
+            categories.forEach(cat => {
+                const value = cat === 'All' ? '' : cat;
+                const isChecked = checkedCategories.includes(value) ? 'checked' : '';
+                html += `<label style="display: flex; padding: 1rem; border-bottom: 1px solid #555; cursor: pointer; color: #a0a0a0;"><input type="checkbox" class="category-filter" value="${value}" onchange="filterProducts()" ${isChecked}> ${cat}</label>`;
+            });
+            document.getElementById('categoryItems').innerHTML = html;
+        }
+
+
+
+        function renderFavorites() {
+            let html = '';
+            if (favorites.length === 0) {
+                html = '<div class="empty"><p>No favorites yet</p></div>';
+            } else {
+                favorites.forEach(favId => {
+                    const product = products.find(p => p.id === favId);
+                    if (product) {
+                        html += `<div class="cart-item"><div style="flex: 1;"><strong>${product.name}</strong><br>Rs. ${product.price}</div><div style="display: flex; gap: 0.5rem; align-items: center;"><button class="card-btn" onclick="addToCart(${product.id}); alert('✅ ${product.name} added to cart!'); renderFavorites();" style="padding: 0.5rem 1rem; background: #1e3a8a; color: #e0e0e0; border: none; border-radius: 5px; cursor: pointer; font-weight: bold;">Add</button><button onclick="toggleFavorite(${product.id}); renderFavorites();" style="padding: 0.5rem 0.8rem; background: #c0392b; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold;">Remove</button></div></div>`;
+                    }
+                });
+            }
+            document.getElementById('favItems').innerHTML = html;
+        }
+
+        function resetFilters() {
+            document.getElementById('search').value = '';
+            document.getElementById('sort').value = '';
+            document.querySelectorAll('input[type="checkbox"]').forEach(c => c.checked = false);
+            filteredProducts = [...products];
+            renderProducts();
+        }
+
+        // FOOTER
+        document.getElementById('footer').innerHTML = `<h3>⚡ Battery Shop Pakistan</h3><p>&copy; 2026 Battery Shop. All rights reserved.</p><p>🚚 Free Shipping | 💯 100% Original | 🔄 30-Day Guarantee</p>`;
+
+        // INIT
+        renderMobileMenu();
+        loadCart();
+        loadFavorites();
+        renderSidebar();
+        renderProducts();
+    </script>
+</body>
+
+</html>

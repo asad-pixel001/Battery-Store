@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #2a2a2a;
+            display: flex;
+            height: 100vh;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .card {
+            background: linear-gradient(135deg, #3f3f3f 0%, #2d3436 100%);
+            height: 500px;
+            width: 400px;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border-left: 4px solid #1e3a8a;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            /* overflow-y: auto; */
+        }
+
+        .FL {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 2px;
+            margin-bottom: -13px;
+            width: 77%;
+        }
+
+        .FL .form-field.a {
+            width: 45%;
+            margin: 5px 2px;
+        }
+
+        .df {
+            display: flex;
+            flex-direction: column;
+            width: 45%;
+            margin: 0px 0px;
+        }
+
+        .b {
+            display: flex;
+            flex-direction: column;
+            width: 70%;
+            margin: 2px 0px;
+        }
+
+        input {
+            padding: 10px 5px;
+            border-radius: 5px;
+            border: 1px solid #1e3a8a;
+            margin: 5px 0px;
+            background: #404040;
+            color: #e0e0e0;
+        }
+
+        input::placeholder {
+            color: #888;
+        }
+
+        label {
+            color: #e0e0e0;
+            margin-bottom: 5px;
+        }
+
+        p {
+            color: #e0e0e0;
+
+        }
+
+        a {
+            color: #2563eb;
+            text-decoration: none;
+        }
+
+        a:hover {
+            color: #1e3a8a;
+        }
+
+        h1 {
+            margin-bottom: 10px;
+            margin-top: 21px;
+            color: #e0e0e0;
+        }
+
+        input[type="submit"] {
+            background: #1e3a8a;
+            color: #e0e0e0;
+            cursor: pointer;
+            font-weight: bold;
+            border: none;
+            transition: background 0.3s;
+        }
+
+        input[type="submit"]:hover {
+            background: #2563eb;
+        }
+
+        .icone {
+            position: relative;
+            left: 124px;
+            bottom: 84px;
+            width: 20px;
+            cursor: pointer;
+            color: #e0e0e0;
+        }
+
+        .icone i {
+            margin-bottom: 35px;
+        }
+
+        .radio {
+            margin-top: -117px;
+            width: 100%;
+            transform: scale(0.7);
+            color: #e0e0e0;
+            margin-bottom: -12px;
+        }
+
+        input[type="radio"] {
+            accent-color: #2563eb;
+            width: 15px;
+            height: 15px;
+        }
+
+        #pwd-strength {
+            color: #2563eb;
+            margin-top: 5px;
+            font-weight: bold;
+        }
+
+        .form-field {
+            position: relative;
+            width: 70%;
+            margin: 10px 0;
+            margin-bottom: -7px;
+        }
+
+        .form-field input {
+            width: 100%;
+            height: 42px;
+            padding: 10px 12px;
+            font-size: 14px;
+            border: 1px solid #1e3a8a;
+            border-radius: 4px;
+            outline: none;
+            background: #404040;
+            color: #e0e0e0;
+            transition: border-color 0.2s ease;
+        }
+
+        .form-field input:focus {
+            border-color: #2563eb;
+        }
+
+        .form-field label {
+            position: absolute;
+            left: 12px;
+            top: 28%;
+            transform: translateY(2%);
+            font-size: 14px;
+            color: #888;
+            pointer-events: none;
+            background: #3f3f3f;
+            padding: 0 6px;
+            transition: all 0.2s ease;
+        }
+
+        .form-field input:focus+label,
+        .form-field input:not(:placeholder-shown)+label {
+            top: -6px;
+            font-size: 12px;
+            color: #2563eb;
+        }
+    </style>
+
+</head>
+
+<body>
+    <form onsubmit="main(event)">
+        <div class="card">
+            <h1>Register Page</h1>
+
+            <div class="FL">
+                <div class="form-field a">
+                    <input type="text" id="fn" name="fn" placeholder=" " autocomplete="off">
+                    <label for="fn">First Name</label>
+                </div>
+                <div class="form-field a">
+                    <input type="text" id="ln" name="ln" placeholder=" " autocomplete="off">
+                    <label for="ln">Last Name</label>
+                </div>
+            </div>
+
+            <div class="form-field b">
+                <input type="email" id="email" name="email" placeholder=" " autocomplete="off">
+                <label for="email">Email</label>
+            </div>
+
+            <div class="form-field b">
+                <input type="password" id="password" name="password" class="pass" placeholder=" "
+                    oninput="checkPassword()" autocomplete="off">
+                <label for="password">Password</label>
+            </div>
+
+            <div class="form-field b">
+                <input type="password" id="cpassword" name="cpassword" class="cpass" placeholder=" " autocomplete="off">
+                <label for="cpassword">Confirm Password</label>
+            </div>
+
+            <div class="icone">
+                <i class="fa-regular fa-eye p"></i>
+                <i class="fa-regular fa-eye c"></i>
+            </div>
+
+            <div class="b">
+                <div class="radio">
+                    <input type="radio" id="C_Letter">
+                    <label for="C_Letter">Capital Letters</label><br>
+                    <input type="radio" id="S_Letter">
+                    <label for="S_Letter">Small Letters</label><br>
+                    <input type="radio" id="Number">
+                    <label for="Number">Number</label><br>
+                    <input type="radio" id="S_char">
+                    <label for="S_char">Special Characters</label>
+                    <div id="pwd-strength"></div>
+                </div>
+            </div>
+
+            <div class="df">
+                <input type="submit" id="su" disabled value="Register">
+                <p>Have an account? <a href="login.html">Login</a></p>
+            </div>
+
+        </div>
+    </form>
+    <script>
+        function main(event) {
+            event.preventDefault();
+            const form = new FormData(event.target);
+            let obj = Object.fromEntries(form)
+            console.log(obj);
+
+            let data = JSON.parse(localStorage.getItem("submit")) || [];
+            console.log(data);
+
+            data.push(obj);
+            localStorage.setItem("submit", JSON.stringify(data));
+            console.log(data, "Data stored in localStorage");
+            window.location.href = "login.html";
+
+
+        }
+        const bbtn = (document.querySelector(".fa-eye.p"));
+        const cbtn = (document.querySelector(".fa-eye.c"));
+
+        const passwordInput = (document.querySelector(".pass"));
+        const cpasswordInput = (document.querySelector(".cpass"));
+
+        bbtn.addEventListener("click", () => {
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text";
+                bbtn.classList.replace("fa-eye", "fa-eye-slash");
+                console.log("show");
+
+            } else {
+                passwordInput.type = "password";
+                bbtn.classList.replace("fa-eye-slash", "fa-eye");
+                console.log("hide");
+            }
+        });
+        cbtn.addEventListener("click", () => {
+            if (cpasswordInput.type === "password") {
+                cpasswordInput.type = "text";
+                cbtn.classList.replace("fa-eye", "fa-eye-slash");
+                console.log("show");
+
+            } else {
+                cpasswordInput.type = "password";
+                cbtn.classList.replace("fa-eye-slash", "fa-eye");
+                console.log("hide");
+            }
+        });
+        function checkPassword() {
+            const password = document.getElementById("password").value;
+            const len = password.length;
+            const small = /[a-z]/.test(password);
+            const capital = /[A-Z]/.test(password);
+            const num = /[0-9]/.test(password);
+            const special = /[^A-Za-z0-9]/.test(password);
+            const all = (small ? 1 : 0) + (capital ? 1 : 0) + (num ? 1 : 0) + (special ? 1 : 0);
+
+            const strengthDiv = document.getElementById("pwd-strength");
+            if (all === 1) {
+                strengthDiv.textContent = 'Weak Password';
+            } else if (all === 2) {
+                strengthDiv.textContent = 'Medium Password';
+            } else if (all === 3) {
+                strengthDiv.textContent = 'Good Password';
+            } else if (all === 4) {
+                strengthDiv.textContent = 'Strong Password';
+            } else {
+                strengthDiv.textContent = '';
+            }
+
+            if (len >= 8 && all === 4) {
+                strengthDiv.textContent = 'Very Strong Password';
+                document.getElementById('su').disabled = false;
+            } else {
+                document.getElementById('su').disabled = true;
+            }
+
+            document.getElementById('S_Letter').checked = small;
+            document.getElementById('S_Letter').style.accentColor = small ? 'green' : '';
+
+            document.getElementById('C_Letter').checked = capital;
+            document.getElementById('C_Letter').style.accentColor = capital ? 'green' : '';
+
+            document.getElementById('Number').checked = num;
+            document.getElementById('Number').style.accentColor = num ? 'green' : '';
+
+            document.getElementById('S_char').checked = special;
+            document.getElementById('S_char').style.accentColor = special ? 'green' : '';
+        }
+    </script>
+</body>
+
+</html>
